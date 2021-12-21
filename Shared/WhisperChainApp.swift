@@ -11,7 +11,7 @@ import SwiftUI
 struct WhisperChainApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WhispersListView()
         }
     }
 }
