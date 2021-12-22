@@ -12,22 +12,34 @@ struct WhispersListView: View {
     @StateObject var viewModel = WhispersListViewModel()
     
     var body: some View {
+        #if os(macOS)
         NavigationView {
-            VStack {
-                switch viewModel.viewStatus {
-                case .fetching:
-                    ProgressView("Loading...")
-                case .loaded:
-                    whispersList
-                case .empty:
-                    Text("No whispers loaded")
-                case .error(let errorMessage):
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                }
-            }
-            .navigationTitle("Popular whispers")
+            contentView
+                .frame(width: 288)
+            Text("Select a whisper")
         }
+        #else
+        NavigationView {
+            contentView
+        }
+        #endif
+    }
+    
+    var contentView: some View {
+        VStack {
+            switch viewModel.viewStatus {
+            case .fetching:
+                ProgressView("Loading...")
+            case .loaded:
+                whispersList
+            case .empty:
+                Text("No whispers loaded")
+            case .error(let errorMessage):
+                Text(errorMessage)
+                    .foregroundColor(.red)
+            }
+        }
+        .navigationTitle("Popular whispers")
         .task {
             viewModel.fetchPopularWhispers(limit: 20)
         }
@@ -44,7 +56,9 @@ struct WhispersListView: View {
             )
             .buttonStyle(.plain)
         }
+        #if os(iOS)
         .listStyle(.grouped)
+        #endif
         .refreshable {
             viewModel.fetchPopularWhispers(limit: 200)
         }

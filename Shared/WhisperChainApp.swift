@@ -12,6 +12,9 @@ struct WhisperChainApp: App {
     var body: some Scene {
         WindowGroup {
             WhispersListView()
+                #if os(macOS)
+                .frame(minWidth: 800, minHeight: 600)
+                #endif
         }
     }
 }

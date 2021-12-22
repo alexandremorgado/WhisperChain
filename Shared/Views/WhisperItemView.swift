@@ -52,6 +52,7 @@ struct WhisperItemView: View {
                 },
                 placeholder: {
                     ProgressView("Loading image...")
+                        .frame(minHeight: 80)
                 }
             )
             footerView

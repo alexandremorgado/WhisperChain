@@ -51,6 +51,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		F607F2A827737CE5001DA0A7 /* WhisperChain--macOS--Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "WhisperChain--macOS--Info.plist"; sourceTree = "<group>"; };
 		F68487F72771E715004C7E67 /* WhisperChainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperChainApp.swift; sourceTree = "<group>"; };
 		F68487F92771E717004C7E67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F68487FE2771E717004C7E67 /* WhisperChain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperChain.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +111,7 @@
 			children = (
 				F68487F62771E715004C7E67 /* Shared */,
 				F68488472771F623004C7E67 /* WhisperChain--iOS--Info.plist */,
+				F607F2A827737CE5001DA0A7 /* WhisperChain--macOS--Info.plist */,
 				F68488052771E717004C7E67 /* macOS */,
 				F684880E2771E717004C7E67 /* Tests iOS */,
 				F684881A2771E717004C7E67 /* Tests macOS */,
@@ -596,6 +598,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "WhisperChain--macOS--Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -624,6 +627,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "WhisperChain--macOS--Info.plist";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
