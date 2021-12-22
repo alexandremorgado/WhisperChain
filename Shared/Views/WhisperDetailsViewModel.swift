@@ -18,23 +18,24 @@ class WhisperDetailsViewModel: ObservableObject {
     @Published var repliesViewStatus = ViewStatus.fetching
     
     var whisperTree: Node<Whisper>?
-    var whispersDict = [String: Whisper]()
     
-    func loadReplies(for rootWhisper: Whisper, limit: Int = 200) async throws {
-        whisperTree = Node(rootWhisper)
+    func setReplies(for rootWhisper: Whisper, limit: Int = 200) async throws {
+        let firstNode = Node(rootWhisper)
+        whisperTree = firstNode
         guard rootWhisper.repliesCount > 0 else { repliesViewStatus = .empty; return }
         repliesViewStatus = .fetching
-        try await loadReplies(for: rootWhisper)
+        try await loadReplies(for: rootWhisper, inNode: firstNode)
         setMostHeartedChain()
     }
     
-    
-    func loadReplies(for whisper: Whisper) async throws {
+    func loadReplies(for whisper: Whisper, inNode node: Node<Whisper>) async throws {
         let replies = try await fetchWhisperReplies(whisper: whisper)
-        guard let node = whisperTree?.find(whisper) else { throw WhisperError.couldNotFindNode }
-        node.add(children: replies.map{Node($0)})
-        for childReply in replies where childReply.repliesCount > 0 {
-            try await loadReplies(for: childReply)
+        for childReply in replies  {
+            let newNode = Node(childReply)
+            node.add(child: newNode)
+            if childReply.repliesCount > 0 {
+                try await loadReplies(for: childReply, inNode: newNode)
+            }
         }
     }
     
@@ -50,7 +51,6 @@ class WhisperDetailsViewModel: ObservableObject {
             throw error
         }
     }
-    
     
     func setMostHeartedChain() {
         guard let tree = whisperTree,

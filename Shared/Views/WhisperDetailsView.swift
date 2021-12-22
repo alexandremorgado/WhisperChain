@@ -32,7 +32,7 @@ struct WhisperDetailsView: View {
         .task {
             if whisper.repliesCount > 0 {
                 do {
-                    try await viewModel.loadReplies(for: whisper, limit: 200)
+                    try await viewModel.setReplies(for: whisper, limit: 200)
                 } catch {
                     print("Error", error)
                 }
@@ -58,6 +58,7 @@ struct WhisperDetailsView: View {
                                         .frame(maxWidth: 200)
                                 }
                             )
+                            .buttonStyle(.plain)
                         }
                     }
                 }
@@ -65,6 +66,7 @@ struct WhisperDetailsView: View {
             }
         }
     }
+    
 }
 
 struct WhisperDetailsView_Previews: PreviewProvider {
