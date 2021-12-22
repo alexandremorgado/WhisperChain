@@ -16,7 +16,7 @@ struct WhisperDetailsView: View {
         ScrollView {
             VStack(spacing: 30) {
                 WhisperItemView(whisper)
-                if viewModel.replies.count > 0 {
+                if whisper.repliesCount > 0 {
                     repliesList
                 } else {
                     Text("NO REPLIES, BE THE FIRST!")
@@ -31,22 +31,26 @@ struct WhisperDetailsView: View {
         .navigationTitle(whisper.text)
         .task {
             if whisper.repliesCount > 0 {
-                viewModel.fetchWhisperReplies(whisper: whisper)
+                do {
+                    try await viewModel.loadReplies(for: whisper, limit: 200)
+                } catch {
+                    print("Error", error)
+                }
             }
         }
     }
     
     var repliesList: some View {
         VStack(alignment: .leading, spacing: 6) {
-            if viewModel.viewStatus == .fetching {
+            if viewModel.repliesViewStatus == .fetching {
                 ProgressView("Loading replies...")
             } else {
-                Text("REPLIES (\(viewModel.replies.count))")
+                Text("REPLIES (\(viewModel.mostHeartedChain.count))")
                     .font(.caption)
                     .foregroundColor(.secondary)
                 ScrollView(.horizontal) {
                     HStack {
-                        ForEach(viewModel.replies) { whisper in
+                        ForEach(viewModel.mostHeartedChain) { whisper in
                             NavigationLink(
                                 destination: { WhisperDetailsView(whisper: whisper) },
                                 label: {
