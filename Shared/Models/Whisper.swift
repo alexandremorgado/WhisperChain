@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Whisper: Identifiable {
+struct Whisper: Identifiable, Equatable {
     let wid: String
     let heartedCount: Int
     let repliesCount: Int
@@ -15,24 +15,11 @@ struct Whisper: Identifiable {
     let urlString: String
     let parentID: String
     
-    var id: String {
-        wid
-    }
-    
-    var url: URL? {
-        URL(string: urlString)
-    }
-    
-//    var heartsText: String {
-//        heartedCount > 0 ? String(heartedCount) : "Heart"
-//    }
-    
-//    var repliesCountText: String {
-//        repliesCount > 0 ? "REPLIES (\(repliesCount))" : "NO REPLIES, BE THE FIRST!"
-//    }
-    
-    // replies (tree)
+    var id: String { wid }
+    var url: URL? { URL(string: urlString) }
 }
+
+// MARK: - Codable
 
 extension Whisper: Codable {
     enum CodingKeys: String, CodingKey {
@@ -43,7 +30,7 @@ extension Whisper: Codable {
         case parentID = "in_reply_to"
     }
     
-    public init(from decoder: Decoder) throws {
+    init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         wid = try container.decode(String.self, forKey: .wid)
         heartedCount = try container.decode(Int.self, forKey: .heartedCount)
@@ -62,6 +49,29 @@ struct PopularWhispers: Decodable {
 struct RepliesWhispers: Decodable {
     let replies: [Whisper]
 }
+
+// MARK: - Extensions
+
+extension Whisper: CustomStringConvertible {
+    var description: String {
+        let textDesc = text.isEmpty ? "[empty]" : "\(text.prefix(12))..."
+        return "\(textDesc) | ♥︎ \(heartedCount)"
+    }
+}
+
+extension Node where Value == Whisper {
+    
+    var heartsCount: Int {
+        value.heartedCount + children.reduce(0) { $0 + $1.value.heartedCount }
+    }
+    
+    var allWhispers: [Whisper] {
+        [value] + children.reduce([]) { $0 + [$1.value] }
+    }
+    
+}
+
+// MARK: - Mocks
 
 extension Whisper {
     static var sample1: Whisper {
@@ -86,3 +96,5 @@ extension Whisper {
         )
     }
 }
+
+
