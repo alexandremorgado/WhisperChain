@@ -14,19 +14,18 @@ class WhispersListViewModel: ObservableObject {
     
     func fetchPopularWhispers(limit: Int = 200) { 
         viewStatus = .fetching
-        
         guard let url = URL(string: "http://prod.whisper.sh/whispers/popular?limit=\(limit)") else {
             viewStatus = .error(message: "wrong URL")
             return
         }
-        let session = URLSession.shared
-        
-        let task = session
+        let task = URLSession.shared
             .dataTask(
                 with: url,
                 completionHandler: { [weak self] data, response, error in
                     guard let responseData = data, error == nil else {
-                        self?.viewStatus = .error(message: error?.localizedDescription ?? "error on loading")
+                        DispatchQueue.main.async {
+                            self?.viewStatus = .error(message: error?.localizedDescription ?? "error on loading")
+                        }
                         return
                     }
                     
