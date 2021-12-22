@@ -7,57 +7,64 @@
 
 import Foundation
 
-class WhisperDetailsViewModel: ObservableObject {
-    
-    @Published var replies = [Whisper]()
-    @Published var viewStatus = ViewStatus.fetching
-    
-    @Published var mostHeartedChain = [Whisper]()
-    
-    func fetchWhisperReplies(whisper: Whisper, limit: Int = 200) {
-        viewStatus = .fetching
-        
-        guard whisper.repliesCount > 0 else {
-            viewStatus = .empty
-            return
-        }
-        
-        guard let url = URL(string: "http://prod.whisper.sh/whispers/replies?limit=\(limit)&wid=\(whisper.wid)") else {
-            viewStatus = .error(message: "wrong URL")
-            return
-        }
-        let session = URLSession.shared
-        
-        let task = session
-            .dataTask(
-                with: url,
-                completionHandler: { [weak self] data, response, error in
-                    guard let responseData = data, error == nil else {
-                        self?.viewStatus = .error(message: error?.localizedDescription ?? "error on loading")
-                        return
-                    }
-                    
-                    do {
-                        let whispers = try JSONDecoder().decode(RepliesWhispers.self, from: responseData)
-                        DispatchQueue.main.async {
-                            self?.replies = whispers.replies
-                            self?.viewStatus = whispers.replies.count > 0 ? .loaded : .empty
-                            self?.setMostHeartedChain()
-                        }
-                    } catch {
-                        DispatchQueue.main.async {
-                            self?.viewStatus = .error(message: error.localizedDescription)
-                        }
-                    }
-                }
-            )
-        
-        task.resume()
-    }
-    
-    func setMostHeartedChain() {
-        
-    }
+enum WhisperError: Error {
+    case errorOnLoading
+    case couldNotFindNode
 }
 
-
+class WhisperDetailsViewModel: ObservableObject {
+    
+    @Published var mostHeartedChain = [Whisper]()
+    @Published var repliesViewStatus = ViewStatus.fetching
+    
+    var whisperTree: Node<Whisper>?
+    var whispersDict = [String: Whisper]()
+    
+    func loadReplies(for rootWhisper: Whisper, limit: Int = 200) async throws {
+        whisperTree = Node(rootWhisper)
+        guard rootWhisper.repliesCount > 0 else { repliesViewStatus = .empty; return }
+        repliesViewStatus = .fetching
+        try await loadReplies(for: rootWhisper)
+        setMostHeartedChain()
+    }
+    
+    
+    func loadReplies(for whisper: Whisper) async throws {
+        let replies = try await fetchWhisperReplies(whisper: whisper)
+        guard let node = whisperTree?.find(whisper) else { throw WhisperError.couldNotFindNode }
+        node.add(children: replies.map{Node($0)})
+        for childReply in replies where childReply.repliesCount > 0 {
+            try await loadReplies(for: childReply)
+        }
+    }
+    
+    func fetchWhisperReplies(whisper: Whisper, limit: Int = 200) async throws -> [Whisper] {
+        guard let url = URL(string: "http://prod.whisper.sh/whispers/replies?limit=\(limit)&wid=\(whisper.wid)") else {
+            throw WhisperError.errorOnLoading
+        }
+        let (data, _) = try await URLSession.shared.data(from: url)
+        do {
+            let whispers = try JSONDecoder().decode(RepliesWhispers.self, from: data)
+            return whispers.replies
+        } catch {
+            throw error
+        }
+    }
+    
+    
+    func setMostHeartedChain() {
+        guard let tree = whisperTree,
+            let heartedSubtree = tree.children.sorted(by: { $0.heartsCount > $1.heartsCount } ).first else {
+            return
+        }
+        #if DEBUG
+        print("Full tree: \n\(tree.treeDescription)\n\n")
+        print("Most hearted subtree: \n\(heartedSubtree.treeDescription)")
+        #endif
+        DispatchQueue.main.async {
+            self.mostHeartedChain = heartedSubtree.allWhispers
+            self.repliesViewStatus = heartedSubtree.allWhispers.count > 0 ? .loaded : .empty
+        }
+    }
+    
+}
