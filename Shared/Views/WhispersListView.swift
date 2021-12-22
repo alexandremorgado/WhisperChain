@@ -20,7 +20,7 @@ struct WhispersListView: View {
                 case .loaded:
                     whispersList
                 case .empty:
-                    Text("No whisper loaded")
+                    Text("No whispers loaded")
                 case .error(let errorMessage):
                     Text(errorMessage)
                         .foregroundColor(.red)
@@ -45,6 +45,9 @@ struct WhispersListView: View {
             .buttonStyle(.plain)
         }
         .listStyle(.grouped)
+        .refreshable {
+            viewModel.fetchPopularWhispers(limit: 200)
+        }
     }
     
 }
