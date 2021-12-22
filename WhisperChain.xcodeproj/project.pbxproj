@@ -13,12 +13,10 @@
 		F684881E2771E717004C7E67 /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F684881D2771E717004C7E67 /* Tests_macOSLaunchTests.swift */; };
 		F684881F2771E717004C7E67 /* WhisperChainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68487F72771E715004C7E67 /* WhisperChainApp.swift */; };
 		F68488202771E717004C7E67 /* WhisperChainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68487F72771E715004C7E67 /* WhisperChainApp.swift */; };
-		F68488212771E717004C7E67 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68487F82771E715004C7E67 /* ContentView.swift */; };
-		F68488222771E717004C7E67 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68487F82771E715004C7E67 /* ContentView.swift */; };
 		F68488232771E717004C7E67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F68487F92771E717004C7E67 /* Assets.xcassets */; };
 		F68488242771E717004C7E67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F68487F92771E717004C7E67 /* Assets.xcassets */; };
-		F68488352771E7DC004C7E67 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68488342771E7DC004C7E67 /* Tree.swift */; };
-		F68488362771E7DC004C7E67 /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68488342771E7DC004C7E67 /* Tree.swift */; };
+		F68488352771E7DC004C7E67 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68488342771E7DC004C7E67 /* Node.swift */; };
+		F68488362771E7DC004C7E67 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68488342771E7DC004C7E67 /* Node.swift */; };
 		F68488382771E80F004C7E67 /* Whisper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68488372771E80F004C7E67 /* Whisper.swift */; };
 		F68488392771E80F004C7E67 /* Whisper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F68488372771E80F004C7E67 /* Whisper.swift */; };
 		F684883C2771EA52004C7E67 /* WhispersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F684883B2771EA52004C7E67 /* WhispersListView.swift */; };
@@ -54,7 +52,6 @@
 
 /* Begin PBXFileReference section */
 		F68487F72771E715004C7E67 /* WhisperChainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperChainApp.swift; sourceTree = "<group>"; };
-		F68487F82771E715004C7E67 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		F68487F92771E717004C7E67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F68487FE2771E717004C7E67 /* WhisperChain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperChain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68488042771E717004C7E67 /* WhisperChain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhisperChain.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,7 +62,7 @@
 		F68488172771E717004C7E67 /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F684881B2771E717004C7E67 /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		F684881D2771E717004C7E67 /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
-		F68488342771E7DC004C7E67 /* Tree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tree.swift; sourceTree = "<group>"; };
+		F68488342771E7DC004C7E67 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
 		F68488372771E80F004C7E67 /* Whisper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Whisper.swift; sourceTree = "<group>"; };
 		F684883B2771EA52004C7E67 /* WhispersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhispersListView.swift; sourceTree = "<group>"; };
 		F684883E2771EA65004C7E67 /* WhisperDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperDetailsView.swift; sourceTree = "<group>"; };
@@ -126,7 +123,6 @@
 				F684883A2771E89D004C7E67 /* Views */,
 				F68488332771E74F004C7E67 /* Models */,
 				F68487F72771E715004C7E67 /* WhisperChainApp.swift */,
-				F68487F82771E715004C7E67 /* ContentView.swift */,
 				F68487F92771E717004C7E67 /* Assets.xcassets */,
 			);
 			path = Shared;
@@ -172,7 +168,7 @@
 		F68488332771E74F004C7E67 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				F68488342771E7DC004C7E67 /* Tree.swift */,
+				F68488342771E7DC004C7E67 /* Node.swift */,
 				F68488372771E80F004C7E67 /* Whisper.swift */,
 			);
 			path = Models;
@@ -181,12 +177,12 @@
 		F684883A2771E89D004C7E67 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F68488482771FC10004C7E67 /* ViewStatus.swift */,
 				F684883E2771EA65004C7E67 /* WhisperDetailsView.swift */,
 				F68488412771EA79004C7E67 /* WhisperDetailsViewModel.swift */,
+				F684884B2771FD96004C7E67 /* WhisperItemView.swift */,
 				F684883B2771EA52004C7E67 /* WhispersListView.swift */,
 				F68488442771EA87004C7E67 /* WhispersListViewModel.swift */,
-				F68488482771FC10004C7E67 /* ViewStatus.swift */,
-				F684884B2771FD96004C7E67 /* WhisperItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -350,8 +346,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F68488492771FC10004C7E67 /* ViewStatus.swift in Sources */,
-				F68488352771E7DC004C7E67 /* Tree.swift in Sources */,
-				F68488212771E717004C7E67 /* ContentView.swift in Sources */,
+				F68488352771E7DC004C7E67 /* Node.swift in Sources */,
 				F684883F2771EA65004C7E67 /* WhisperDetailsView.swift in Sources */,
 				F684884C2771FD96004C7E67 /* WhisperItemView.swift in Sources */,
 				F68488452771EA87004C7E67 /* WhispersListViewModel.swift in Sources */,
@@ -367,8 +362,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F684884A2771FC10004C7E67 /* ViewStatus.swift in Sources */,
-				F68488362771E7DC004C7E67 /* Tree.swift in Sources */,
-				F68488222771E717004C7E67 /* ContentView.swift in Sources */,
+				F68488362771E7DC004C7E67 /* Node.swift in Sources */,
 				F68488402771EA65004C7E67 /* WhisperDetailsView.swift in Sources */,
 				F684884D2771FD96004C7E67 /* WhisperItemView.swift in Sources */,
 				F68488462771EA87004C7E67 /* WhispersListViewModel.swift in Sources */,
